@@ -88,13 +88,36 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+  ## We call the "getsolve" function in the "x" list to get the "s" variable
+  ## that lives in the environment created for "x". We store the result
+  ## in a local "s" variable.
   s <- x$getsolve()
+  
+  ## If "s" is not NULL, it means that the inverse of the matrix was 
+  ## previously calculated (and cached). In that case we simply return "s".
   if(!is.null(s)) {
     message("getting cached data")
     return(s)
   }
+  
+  ## If we get to this point, "s" must be NULL, meaning that the inverse
+  ## of the matrix was never calculated.
+  ## In that case we call the "get" function in the "x" list to get the
+  ## "x" variable that lives in the environment created for "x" (it's not
+  ## our local "x"!!! So we store it in a local variable called "data").
   data <- x$get()
+  ## We call "solve" to calculate the inverse of the matrix that was used 
+  ## when we initially called makeCacheMatrix (that matrix is now in our
+  ## local "data" variable). The ... parameters are optional in the calling
+  ## to cacheSolve, and their are included in the call to "solve".
   s <- solve(data, ...)
+  ## As we calculated the inverse of the matrix, we use the "setsolve" 
+  ## function in the "x" list, so that inverse matrix is stored in the 
+  ## "s" variable that lives in the environmet created for "x".
+  ## Note that the "s" parameter is a local variable, so this step needs 
+  ## to be done in order to store it in the environment created for "x".
   x$setsolve(s)
+  
+  ## Finally, we return our local "s", that has the inverse of the matrix.
   s
 }
