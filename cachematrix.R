@@ -109,12 +109,12 @@ cacheSolve <- function(x, ...) {
   ## We call "solve" to calculate the inverse of the matrix that was used 
   ## when we initially called makeCacheMatrix (that matrix is now in our
   ## local "data" variable). The ... parameters are optional in the calling
-  ## to cacheSolve, and their are included in the call to "solve".
+  ## to cacheSolve, and they are included in the call to "solve".
   s <- solve(data, ...)
   ## As we calculated the inverse of the matrix, we use the "setsolve" 
   ## function in the "x" list, so that inverse matrix is stored in the 
   ## "s" variable that lives in the environmet created for "x".
-  ## Note that the "s" parameter is a local variable, so this step needs 
+  ## Note that the "s" variable is local, so this step needs 
   ## to be done in order to store it in the environment created for "x".
   x$setsolve(s)
   
